@@ -9,7 +9,7 @@ var game = new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
     preload: function () {
         game.PhaserBones = game.plugins.add(Rift.PhaserBones);
         game.PhaserBones.Cache = game.cache;
-        game.PhaserBones.AddResourceByName(model, "/" + model + "/");
+        game.PhaserBones.AddResourceByName(model, model + "/");
         game.PhaserBones.LoadResources();
     },
     create: function () {
