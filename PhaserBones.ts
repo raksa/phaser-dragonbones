@@ -149,15 +149,6 @@ PIXI.Sprite.prototype.getBounds = function (targetCoordinateSpace) {
     return bounds;
 };
 
-
-
-
-
-
-
-
-
-
 //PLUGIN
 module Rift {
     export class PhaserBones extends Phaser.Plugin {
@@ -345,37 +336,6 @@ module Rift {
     }    
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace dragonBones {
 
     declare var game: Phaser.Game;
@@ -533,27 +493,6 @@ namespace dragonBones {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace dragonBones {
     export class PhaserTextureAtlasData extends dragonBones.TextureAtlasData {
         public static toString(): string {
@@ -603,33 +542,6 @@ namespace dragonBones {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace dragonBones {
 
     declare var game: Phaser.Game;
@@ -833,29 +745,6 @@ namespace dragonBones {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace dragonBones {
 
     declare var game: Phaser.Game;
@@ -982,8 +871,6 @@ namespace dragonBones {
         }
     }    
 }
-
-
 class DisplayType {
     public static Image: number = 0;
     public static Mesh: number = 2;
