@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "http-server -o"
+    "start": "http-server -o",
+    "build": "grunt build"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,9 @@
   },
   "homepage": "https://github.com/raksa/phaser-dragonbones#readme",
   "devDependencies": {
+    "typescript": "^2.2.2",
+    "grunt": "^1.0.1",
+    "grunt-ts": "^6.0.0-beta.15",
     "http-server": "^0.9.0"
   }
 }
