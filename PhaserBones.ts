@@ -153,7 +153,7 @@ PIXI.Sprite.prototype.getBounds = function (targetCoordinateSpace) {
 module Rift {
     export class PhaserBones extends Phaser.Plugin {
         private static ObjDictionary: { [key: string]: PhaserBones.Object } = {}
-        private Suffix: string = "PhaserBones";        
+        private Suffix: string = "PhaserBones";
         public ImageSuffix: string = '_Image_' + this.Suffix;
         public TextureSuffix: string = '_TextureMap_' + this.Suffix;
         public BonesSuffix: string = '_Bones_' + this.Suffix;
@@ -165,24 +165,24 @@ module Rift {
             this.Cache = this.game.cache;
         }
 
-        AddResourceByName(key:string,path:string): void {
-            this.AddResources( key, new Array<Rift.PhaserBones.Resource>(
-                    new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Image, path + 'texture.png')
-                    , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.TextureMap, path + 'texture.json')
-                    , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Bones, path + 'skeleton.json')
-                )
+        AddResourceByName(key: string, path: string): void {
+            this.AddResources(key, new Array<Rift.PhaserBones.Resource>(
+                new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Image, path + 'texture.png')
+                , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.TextureMap, path + 'texture.json')
+                , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Bones, path + 'skeleton.json')
+            )
             );
         }
 
         public GenerateFilesList(key: string, path: string): { [key: string]: { [key: string]: string }[] } {
             this.AddResources(key, new Array<Rift.PhaserBones.Resource>(
-                    new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Image, path + 'texture.png')
-                    , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.TextureMap, path + 'texture.json')
-                    , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Bones, path + 'skeleton.json')
-                )
+                new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Image, path + 'texture.png')
+                , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.TextureMap, path + 'texture.json')
+                , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Bones, path + 'skeleton.json')
+            )
             );
             return {
-                [path] : [
+                [path]: [
                     {
                         "file": "texture",
                         "ext": "png",
@@ -210,24 +210,21 @@ module Rift {
 
         AddResource(key: string, res: PhaserBones.Resource): void {
             key = key.toLowerCase();
-            var updated : boolean = false;
-            for (var reskey in PhaserBones.ObjDictionary)
-            {
-                if (reskey == key)
-                {
+            var updated: boolean = false;
+            for (var reskey in PhaserBones.ObjDictionary) {
+                if (reskey == key) {
                     if (PhaserBones.ObjDictionary[reskey].Resources.filter(function (thisres) { return thisres.Type === res.Type }).length == 0) PhaserBones.ObjDictionary[reskey].Resources.push(res);
                     updated = true;
                     break;
                 }
             }
-            if (!updated)
-            {
+            if (!updated) {
                 PhaserBones.ObjDictionary[key] = new PhaserBones.Object(new Array<PhaserBones.Resource>());
                 PhaserBones.ObjDictionary[key].Resources.push(res);
             }
         }
 
-        LoadResources() : void {
+        LoadResources(): void {
             for (var reskey in PhaserBones.ObjDictionary) {
                 for (var i = 0; i < PhaserBones.ObjDictionary[reskey].Resources.length; i++) {
                     var item = PhaserBones.ObjDictionary[reskey].Resources[i];
@@ -272,22 +269,22 @@ module Rift {
                     }
                 }
                 item.Skeleton = item.Factory.parseDragonBonesData(bones);
-                item.Factory.parseTextureAtlasData(texture, image);               
+                item.Factory.parseTextureAtlasData(texture, image);
                 return item;
             }
             return null;
         }
-        
+
         GetArmature(key: string, armatureName?: string): dragonBones.PhaserArmatureDisplay {
             var item = this.CreateFactoryItem(key);
-            if (armatureName == null) armatureName = item.Skeleton.armatureNames[0];      
+            if (armatureName == null) armatureName = item.Skeleton.armatureNames[0];
             var armature = item.Factory.buildArmatureDisplay(armatureName);
-            item.Armature = armature;            
+            item.Armature = armature;
             this.RefreshClock();
             return item.Armature;
-        }     
+        }
 
-        RefreshClock() : void {
+        RefreshClock(): void {
             var hasEvent: boolean = false;
             var callback = dragonBones.PhaserFactory._clockHandler;
             this.game.time.events.events.forEach(function (event, index, array) {
@@ -297,7 +294,7 @@ module Rift {
                 }
             });
             if (!hasEvent) this.game.time.events.loop(20, dragonBones.PhaserFactory._clockHandler, dragonBones.PhaserFactory);
-        }   
+        }
     }
 
     export module PhaserBones {
@@ -317,9 +314,9 @@ module Rift {
         export class Resource {
             public Type: PhaserBones.Enums.ResType;
             public FilePath: string;
-            public Loaded: boolean = false; 
-            public Cache: any;  
-            public CacheKey: string;  
+            public Loaded: boolean = false;
+            public Cache: any;
+            public CacheKey: string;
             constructor(type: PhaserBones.Enums.ResType, filepath: string) {
                 this.Type = type;
                 this.FilePath = filepath;
@@ -333,7 +330,7 @@ module Rift {
                 , Bones
             }
         }
-    }    
+    }
 }
 
 namespace dragonBones {
@@ -364,7 +361,7 @@ namespace dragonBones {
 
             if (!PhaserFactory._eventManager) {
                 PhaserFactory._eventManager = new PhaserArmatureDisplay();
-                PhaserFactory._clock = new dragonBones.WorldClock();               
+                PhaserFactory._clock = new dragonBones.WorldClock();
             }
         }
 
@@ -654,13 +651,12 @@ namespace dragonBones {
                     const texture = <PIXI.Texture>(this._armature._replacedTexture || currentTextureData.texture);
                     this._updatePivot(rawDisplayData, currentDisplayData, currentTextureData);
 
-                    if (texture && texture.frame)
-                    {
+                    if (texture && texture.frame) {
                         frameDisplay.setTexture(texture);
                         frameDisplay.width = texture.frame.width;
-                        frameDisplay.height = texture.frame.height;                         
-                        frameDisplay.texture.baseTexture.skipRender = false;                       
-                    }      
+                        frameDisplay.height = texture.frame.height;
+                        frameDisplay.texture.baseTexture.skipRender = false;
+                    }
 
                     (<any>texture.baseTexture).resolution = 1;
                     (<any>texture.baseTexture).source = textureAtlasTexture;
@@ -756,16 +752,16 @@ namespace dragonBones {
         public maxX: number = 0;
         public maxY: number = 0;
 
-        private _debugDrawer: Phaser.Graphics;         
+        private _debugDrawer: Phaser.Graphics;
 
         public constructor() {
-            super(game,0,0,0);
+            super(game, 0, 0, 0);
         }
 
         public SetBounds(force?: boolean) {
             if (force || this.maxX < this.getBounds().width) this.maxX = this.getBounds().width;
             if (force || this.maxY < this.getBounds().height) this.maxY = this.getBounds().height;
-            this.body.setSize(this.maxX/2, this.maxX/2, this.maxY, 0);
+            this.body.setSize(this.maxX / 2, this.maxX / 2, this.maxY, 0);
         }
 
         public _onClear(): void {
@@ -867,9 +863,9 @@ namespace dragonBones {
                 var item = this.getChildAt(i);
                 if ((<any>item).texture == null) this.removeChildAt(i);
             }
-            
+
         }
-    }    
+    }
 }
 class DisplayType {
     public static Image: number = 0;
