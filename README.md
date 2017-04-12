@@ -23,4 +23,6 @@ Make running
 ````
 >npm run start
 
+test example in  "example" folder
+
 ````
