@@ -9,6 +9,16 @@ Phaser + dragonbones
 
 [original repo](https://bitbucket.org/silashatfield/phaserbones)
 
+Make building
+````
+>cd phaser-dragonbones
+
+>npm install
+
+>npm run build
+
+````
+
 Make running
 ````
 >cd phaser-dragonbones
@@ -16,3 +26,5 @@ Make running
 >npm install
 
 >npm run start
+
+````
