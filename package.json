@@ -1,0 +1,27 @@
+{
+  "name": "phaser-dragonbones",
+  "version": "1.0.0",
+  "description": "Phasr plugin for dragonbones animator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -o"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raksa/phaser-dragonbones.git"
+  },
+  "keywords": [
+    "Phaser",
+    "Phasr-DragonBones"
+  ],
+  "author": "Raksa Eng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raksa/phaser-dragonbones/issues"
+  },
+  "homepage": "https://github.com/raksa/phaser-dragonbones#readme",
+  "devDependencies": {
+    "http-server": "^0.9.0"
+  }
+}
