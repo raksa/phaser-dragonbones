@@ -380,7 +380,7 @@ namespace dragonBones {
 
     declare var game: Phaser.Game;
 
-    export class PhaserFactory extends BaseFactory {
+    export class PhaserFactory extends dragonBones.BaseFactory {
         private static _factory: PhaserFactory = null;
 
         public static _eventManager: PhaserArmatureDisplay = null;
@@ -404,7 +404,7 @@ namespace dragonBones {
 
             if (!PhaserFactory._eventManager) {
                 PhaserFactory._eventManager = new PhaserArmatureDisplay();
-                PhaserFactory._clock = new WorldClock();               
+                PhaserFactory._clock = new dragonBones.WorldClock();               
             }
         }
 
@@ -412,7 +412,7 @@ namespace dragonBones {
             if (textureAtlasData) {
                 textureAtlasData.texture = textureAtlas;
             } else {
-                textureAtlasData = BaseObject.borrowObject(PhaserTextureAtlasData);
+                textureAtlasData = dragonBones.BaseObject.borrowObject(PhaserTextureAtlasData);
             }
 
             return textureAtlasData;
@@ -421,12 +421,12 @@ namespace dragonBones {
          * @private
          */
         protected _generateArmature(dataPackage: BuildArmaturePackage): Armature {
-            const armature = BaseObject.borrowObject(Armature);
+            const armature = dragonBones.BaseObject.borrowObject(dragonBones.Armature);
             const armatureDisplayContainer = new PhaserArmatureDisplay();
 
             armature._armatureData = dataPackage.armature;
             armature._skinData = dataPackage.skin;
-            armature._animation = BaseObject.borrowObject(Animation);
+            armature._animation = dragonBones.BaseObject.borrowObject(dragonBones.Animation);
             armature._display = armatureDisplayContainer;
             armature._eventManager = PhaserFactory._eventManager;
 
@@ -440,8 +440,8 @@ namespace dragonBones {
         /**
          * @private
          */
-        protected _generateSlot(dataPackage: BuildArmaturePackage, slotDisplayDataSet: SlotDisplayDataSet): Slot {
-            const slot = BaseObject.borrowObject(PhaserSlot);
+        protected _generateSlot(dataPackage: BuildArmaturePackage, slotDisplayDataSet: SlotDisplayDataSet): dragonBones.Slot {
+            const slot = dragonBones.BaseObject.borrowObject(PhaserSlot);
             const slotData = slotDisplayDataSet.slot;
             const displayList = [];
 
@@ -555,7 +555,7 @@ namespace dragonBones {
 
 
 namespace dragonBones {
-    export class PhaserTextureAtlasData extends TextureAtlasData {
+    export class PhaserTextureAtlasData extends dragonBones.TextureAtlasData {
         public static toString(): string {
             return "[class dragonBones.PhaserTextureAtlasData]";
         }
@@ -574,13 +574,13 @@ namespace dragonBones {
          * @private
          */
         public generateTextureData(): TextureData {
-            return BaseObject.borrowObject(PhaserTextureData);
+            return dragonBones.BaseObject.borrowObject(PhaserTextureData);
         }
     }
     /**
      * @private
      */
-    export class PhaserTextureData extends TextureData {
+    export class PhaserTextureData extends dragonBones.TextureData {
         public static toString(): string {
             return "[class dragonBones.PhaserTextureData]";
         }
@@ -634,7 +634,7 @@ namespace dragonBones {
 
     declare var game: Phaser.Game;
 
-    export class PhaserSlot extends Slot {
+    export class PhaserSlot extends dragonBones.Slot {
         public static toString(): string {
             return "[class dragonBones.PhaserSlot]";
         }
@@ -984,4 +984,8 @@ namespace dragonBones {
 }
 
 
-
+class DisplayType {
+    public static Image: number = 0;
+    public static Mesh: number = 2;
+    public static Armature: number = 1;
+}

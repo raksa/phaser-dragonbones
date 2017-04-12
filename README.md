@@ -21,10 +21,6 @@ Make building
 
 Make running
 ````
->cd phaser-dragonbones
-
->npm install
-
 >npm run start
 
 ````
