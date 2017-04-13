@@ -125,7 +125,7 @@ module Rift {
             return null;
         }
 
-        GetArmature(key: string, armatureName?: string): PhaserArmatureDisplay {
+        GetArmature(key: string, armatureName?: string): dragonBones.PhaserArmatureDisplay {
             var item = this.CreateFactoryItem(key);
             if (armatureName == null) armatureName = item.Skeleton.armatureNames[0];
             var armature = item.Factory.buildArmatureDisplay(armatureName);
@@ -136,14 +136,14 @@ module Rift {
 
         RefreshClock(): void {
             var hasEvent: boolean = false;
-            var callback = PhaserFactory._clockHandler;
+            var callback = dragonBones.PhaserFactory._clockHandler;
             this.game.time.events.events.forEach(function (event, index, array) {
                 if (event.callback == callback) {
                     hasEvent = true;
                     return;
                 }
             });
-            if (!hasEvent) this.game.time.events.loop(20, PhaserFactory._clockHandler, PhaserFactory);
+            if (!hasEvent) this.game.time.events.loop(20, dragonBones.PhaserFactory._clockHandler, dragonBones.PhaserFactory);
         }
     }
 
@@ -154,8 +154,8 @@ module Rift {
         export class Object {
             public Resources: PhaserBones.Resource[];
             public Skeleton: dragonBones.DragonBonesData;
-            public Factory: PhaserFactory = new PhaserFactory(null, PhaserBones.instance.game);
-            public Armature: PhaserArmatureDisplay;
+            public Factory: dragonBones.PhaserFactory = new dragonBones.PhaserFactory(null, PhaserBones.instance.game);
+            public Armature: dragonBones.PhaserArmatureDisplay;
             constructor(resources: PhaserBones.Resource[]) {
                 this.Resources = resources;
             }

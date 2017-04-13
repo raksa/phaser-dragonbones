@@ -9,13 +9,19 @@ Phaser + dragonbones
 
 [original repo](https://bitbucket.org/silashatfield/phaserbones)
 
-Make building
+Make clone
+````
+>git clone --recurse-submodules https://github.com/raksa/phaser-dragonbones.git
+
+````
+
+Make compiling
 ````
 >cd phaser-dragonbones
 
 >npm install
 
->npm run build
+>npm run compile
 
 ````
 
