@@ -8,7 +8,8 @@ var sprite;
 new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
     preload: function () {
         this.PhaserBones = this.game.plugins.add(Rift.PhaserBones);
-        this.PhaserBones.AddResourceByName(model, model + "/");
+        this.PhaserBones.AddResourceByName(model,
+            "Swordsman/SwordsMan_ske.json", "Swordsman/SwordsMan_tex.json", "Swordsman/SwordsMan_tex.png");
         this.PhaserBones.LoadResources();
     },
     create: function () {

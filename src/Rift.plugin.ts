@@ -15,43 +15,14 @@ module Rift {
             PhaserBones.instance = this;
         }
 
-        AddResourceByName(key: string, path: string): void {
+        AddResourceByName(key: string, skeletonJson: string, textureJson: string, texturePng: string): void {
             this.AddResources(key, new Array<Rift.PhaserBones.Resource>(
-                new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Image, path + 'texture.png')
-                , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.TextureMap, path + 'texture.json')
-                , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Bones, path + 'skeleton.json')
+                new Rift.PhaserBones.Resource(Rift.PhaserBones.ResType.Image, texturePng)
+                , new Rift.PhaserBones.Resource(Rift.PhaserBones.ResType.TextureMap, textureJson)
+                , new Rift.PhaserBones.Resource(Rift.PhaserBones.ResType.Bones, skeletonJson)
             )
             );
         }
-
-        public GenerateFilesList(key: string, path: string): { [key: string]: { [key: string]: string }[] } {
-            this.AddResources(key, new Array<Rift.PhaserBones.Resource>(
-                new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Image, path + 'texture.png')
-                , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.TextureMap, path + 'texture.json')
-                , new Rift.PhaserBones.Resource(Rift.PhaserBones.Enums.ResType.Bones, path + 'skeleton.json')
-            )
-            );
-            return {
-                [path]: [
-                    {
-                        "file": "texture",
-                        "ext": "png",
-                        "key": key + this.ImageSuffix
-                    },
-                    {
-                        "file": "texture",
-                        "ext": "json",
-                        "key": key + this.TextureSuffix
-                    },
-                    {
-                        "file": "skeleton",
-                        "ext": "json",
-                        "key": key + this.BonesSuffix
-                    }
-                ]
-            }
-        }
-
         AddResources(key: string, res: PhaserBones.Resource[]): void {
             for (var i = 0; i < res.length; i++) {
                 this.AddResource(key, res[i]);
@@ -61,9 +32,11 @@ module Rift {
         AddResource(key: string, res: PhaserBones.Resource): void {
             key = key.toLowerCase();
             var updated: boolean = false;
-            for (var reskey in PhaserBones.ObjDictionary) {
-                if (reskey == key) {
-                    if (PhaserBones.ObjDictionary[reskey].Resources.filter(function (thisres) { return thisres.Type === res.Type }).length == 0) PhaserBones.ObjDictionary[reskey].Resources.push(res);
+            for (var resKey in PhaserBones.ObjDictionary) {
+                if (resKey == key) {
+                    if (PhaserBones.ObjDictionary[resKey].Resources.filter(function (resource) {
+                        return resource.Type === res.Type;
+                    }).length == 0) PhaserBones.ObjDictionary[resKey].Resources.push(res);
                     updated = true;
                     break;
                 }
@@ -75,19 +48,20 @@ module Rift {
         }
 
         LoadResources(): void {
-            for (var reskey in PhaserBones.ObjDictionary) {
-                for (var i = 0; i < PhaserBones.ObjDictionary[reskey].Resources.length; i++) {
-                    var item = PhaserBones.ObjDictionary[reskey].Resources[i];
+            for (var resKey in PhaserBones.ObjDictionary) {
+                var resources: PhaserBones.Resource[] = PhaserBones.ObjDictionary[resKey].Resources;
+                for (var i = 0; i < resources.length; i++) {
+                    var item = resources[i];
                     if (item.Loaded) continue;
                     switch (item.Type) {
-                        case PhaserBones.Enums.ResType.Image:
-                            this.game.load.image(reskey + this.ImageSuffix, item.FilePath);
+                        case PhaserBones.ResType.Image:
+                            this.game.load.image(resKey + this.ImageSuffix, item.FilePath);
                             break;
-                        case PhaserBones.Enums.ResType.TextureMap:
-                            this.game.load.json(reskey + this.TextureSuffix, item.FilePath);
+                        case PhaserBones.ResType.TextureMap:
+                            this.game.load.json(resKey + this.TextureSuffix, item.FilePath);
                             break;
-                        case PhaserBones.Enums.ResType.Bones:
-                            this.game.load.json(reskey + this.BonesSuffix, item.FilePath);
+                        case PhaserBones.ResType.Bones:
+                            this.game.load.json(resKey + this.BonesSuffix, item.FilePath);
                             break;
                     }
                     item.Loaded = true;
@@ -99,21 +73,21 @@ module Rift {
             key = key.toLowerCase();
             for (var reskey in PhaserBones.ObjDictionary) {
                 if (key && reskey != key) continue;
-                var oitem = PhaserBones.ObjDictionary[reskey];
-                var item = new PhaserBones.Object(oitem.Resources);
+                var oItem = PhaserBones.ObjDictionary[reskey];
+                var item = new PhaserBones.Object(oItem.Resources);
                 var image = null;
                 var texture = null;
                 var bones = null;
                 for (var i = 0; i < item.Resources.length; i++) {
                     var res = item.Resources[i];
                     switch (res.Type) {
-                        case PhaserBones.Enums.ResType.Image:
+                        case PhaserBones.ResType.Image:
                             image = this.Cache.getItem(reskey + this.ImageSuffix, Rift.PhaserBones.IMAGE).data;
                             break;
-                        case PhaserBones.Enums.ResType.TextureMap:
+                        case PhaserBones.ResType.TextureMap:
                             texture = this.Cache.getItem(reskey + this.TextureSuffix, Rift.PhaserBones.JSON).data;
                             break;
-                        case PhaserBones.Enums.ResType.Bones:
+                        case PhaserBones.ResType.Bones:
                             bones = this.Cache.getItem(reskey + this.BonesSuffix, Rift.PhaserBones.JSON).data;
                             break;
                     }
@@ -160,25 +134,23 @@ module Rift {
                 this.Resources = resources;
             }
         }
-        
+
         export class Resource {
-            public Type: PhaserBones.Enums.ResType;
+            public Type: PhaserBones.ResType;
             public FilePath: string;
             public Loaded: boolean = false;
             public Cache: any;
             public CacheKey: string;
-            constructor(type: PhaserBones.Enums.ResType, filepath: string) {
+            constructor(type: PhaserBones.ResType, filepath: string) {
                 this.Type = type;
                 this.FilePath = filepath;
             }
         }
 
-        export module Enums {
-            export enum ResType {
-                Image
-                , TextureMap
-                , Bones
-            }
+        export enum ResType {
+            Image
+            , TextureMap
+            , Bones
         }
     }
 }
