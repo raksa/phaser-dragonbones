@@ -1,5 +1,7 @@
 class PhaserArmatureDisplay extends Phaser.Sprite implements dragonBones.IArmatureDisplay {
 
+    public game: Phaser.Game = null;
+
     public _armature: dragonBones.Armature;
 
     public maxX: number = 0;
@@ -7,8 +9,10 @@ class PhaserArmatureDisplay extends Phaser.Sprite implements dragonBones.IArmatu
 
     private _debugDrawer: Phaser.Graphics;
 
-    public constructor() {
+    public constructor(game: Phaser.Game) {
         super(game, 0, 0, 0);
+
+        this.game = game;
     }
 
     public SetBounds(force?: boolean) {
@@ -34,7 +38,7 @@ class PhaserArmatureDisplay extends Phaser.Sprite implements dragonBones.IArmatu
 
     public _debugDraw(): void {
         if (!this._debugDrawer) {
-            this._debugDrawer = new Phaser.Graphics(game);
+            this._debugDrawer = new Phaser.Graphics(this.game);
         }
 
         this.addChild(this._debugDrawer);

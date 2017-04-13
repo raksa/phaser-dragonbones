@@ -8,9 +8,11 @@ module Rift {
         public Cache: PhaserBones.ICache;
         public static IMAGE: number = 2;
         public static JSON: number = 11;
+        public static instance: PhaserBones = null;
         constructor(game: Phaser.Game, parent: Phaser.PluginManager) {
             super(game, parent);
             this.Cache = this.game.cache;
+            PhaserBones.instance = this;
         }
 
         AddResourceByName(key: string, path: string): void {
@@ -152,7 +154,7 @@ module Rift {
         export class Object {
             public Resources: PhaserBones.Resource[];
             public Skeleton: dragonBones.DragonBonesData;
-            public Factory: PhaserFactory = new PhaserFactory();
+            public Factory: PhaserFactory = new PhaserFactory(null, PhaserBones.instance.game);
             public Armature: PhaserArmatureDisplay;
             constructor(resources: PhaserBones.Resource[]) {
                 this.Resources = resources;

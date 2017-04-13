@@ -5,7 +5,7 @@ var animations = [
     'steady', 'steady2', 'attack1', 'attack1_+1', 'attack2', 'jump', 'walk', 'walk2',
 ];
 
-var game = new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
+new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
     preload: function () {
         this.PhaserBones = this.game.plugins.add(Rift.PhaserBones);
         this.PhaserBones.AddResourceByName(model, model + "/");

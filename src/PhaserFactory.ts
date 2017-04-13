@@ -1,4 +1,7 @@
 class PhaserFactory extends dragonBones.BaseFactory {
+
+    public game: Phaser.Game;
+
     private static _factory: PhaserFactory = null;
 
     public static _eventManager: PhaserArmatureDisplay = null;
@@ -9,19 +12,21 @@ class PhaserFactory extends dragonBones.BaseFactory {
         PhaserFactory._clock.advanceTime(-1); // passedTime !?
     }
 
-    public static get factory(): PhaserFactory {
+    public static get factory(game: Phaser.Game): PhaserFactory {
         if (!PhaserFactory._factory) {
-            PhaserFactory._factory = new PhaserFactory();
+            PhaserFactory._factory = new PhaserFactory(null, game);
         }
 
         return PhaserFactory._factory;
     }
 
-    public constructor(dataParser: dragonBones.DataParser = null) {
+    public constructor(dataParser: dragonBones.DataParser = null, game: Phaser.Game) {
         super(dataParser);
 
+        this.game = game;
+
         if (!PhaserFactory._eventManager) {
-            PhaserFactory._eventManager = new PhaserArmatureDisplay();
+            PhaserFactory._eventManager = new PhaserArmatureDisplay(game);
             PhaserFactory._clock = new dragonBones.WorldClock();
         }
     }
@@ -40,7 +45,7 @@ class PhaserFactory extends dragonBones.BaseFactory {
      */
     protected _generateArmature(dataPackage: dragonBones.BuildArmaturePackage): dragonBones.Armature {
         const armature = dragonBones.BaseObject.borrowObject(dragonBones.Armature);
-        const armatureDisplayContainer = new PhaserArmatureDisplay();
+        const armatureDisplayContainer = new PhaserArmatureDisplay(this.game);
 
         armature._armatureData = dataPackage.armature;
         armature._skinData = dataPackage.skin;
@@ -63,8 +68,9 @@ class PhaserFactory extends dragonBones.BaseFactory {
         const slotData = slotDisplayDataSet.slot;
         const displayList = [];
 
+        slot.game = this.game;
         slot.name = slotData.name;
-        slot._rawDisplay = new Phaser.Sprite(game, 0, 0);
+        slot._rawDisplay = new Phaser.Sprite(this.game, 0, 0);
         slot._meshDisplay = null;
 
         for (let i = 0, l = slotDisplayDataSet.displays.length; i < l; ++i) {
@@ -140,7 +146,7 @@ class PhaserFactory extends dragonBones.BaseFactory {
                 );
             }
 
-            return new Phaser.Sprite(game, 0, 0, textureData.texture);
+            return new Phaser.Sprite(this.game, 0, 0, textureData.texture);
         }
 
         return null;
