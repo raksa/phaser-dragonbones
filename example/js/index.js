@@ -4,7 +4,7 @@ var model = "Swordsman";
 var animations = [
     'steady', 'steady2', 'attack1', 'attack1_+1', 'attack2', 'jump', 'walk', 'walk2',
 ];
-
+var sprite;
 new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
     preload: function () {
         this.PhaserBones = this.game.plugins.add(Rift.PhaserBones);
@@ -31,7 +31,7 @@ new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
         }, group);
     },
     createSprite: function (animation) {
-        var sprite = this.PhaserBones.GetArmature(model);
+        sprite = this.PhaserBones.GetArmature(model);
         sprite.position.setTo(this.world.width / 2, 3 * this.world.height / 4);
         sprite.animate(animation);
         sprite.scale.setTo(0.6);
