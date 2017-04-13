@@ -160,7 +160,7 @@ module Rift {
                 this.Resources = resources;
             }
         }
-
+        
         export class Resource {
             public Type: PhaserBones.Enums.ResType;
             public FilePath: string;

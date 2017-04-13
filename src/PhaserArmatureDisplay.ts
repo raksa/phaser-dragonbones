@@ -1,4 +1,4 @@
-class PhaserArmatureDisplay extends Phaser.Sprite implements dragonBones.IArmatureDisplay {
+class PhaserArmatureDisplay extends Phaser.Sprite implements dragonBones.IArmatureProxy {
 
     public game: Phaser.Game = null;
 
@@ -36,26 +36,30 @@ class PhaserArmatureDisplay extends Phaser.Sprite implements dragonBones.IArmatu
         //this.emit(eventObject.type, eventObject);
     }
 
-    public _debugDraw(): void {
+    public _debugDraw(isEnabled: boolean): void {
         if (!this._debugDrawer) {
             this._debugDrawer = new Phaser.Graphics(this.game);
         }
 
-        this.addChild(this._debugDrawer);
-        this._debugDrawer.clear();
+        if (isEnabled) {
+            this.addChild(this._debugDrawer);
+            this._debugDrawer.clear();
 
-        const bones = this._armature.getBones();
-        for (let i = 0, l = bones.length; i < l; ++i) {
-            const bone = bones[i];
-            const boneLength = Math.max(bone.length, 5);
-            const startX = bone.globalTransformMatrix.tx;
-            const startY = bone.globalTransformMatrix.ty;
-            const endX = startX + bone.globalTransformMatrix.a * boneLength;
-            const endY = startY + bone.globalTransformMatrix.b * boneLength;
+            const bones = this._armature.getBones();
+            for (let i = 0, l = bones.length; i < l; ++i) {
+                const bone = bones[i];
+                const boneLength = Math.max(bone.length, 5);
+                const startX = bone.globalTransformMatrix.tx;
+                const startY = bone.globalTransformMatrix.ty;
+                const endX = startX + bone.globalTransformMatrix.a * boneLength;
+                const endY = startY + bone.globalTransformMatrix.b * boneLength;
 
-            this._debugDrawer.lineStyle(1, bone.ik ? 0xFF0000 : 0x00FF00, 0.5);
-            this._debugDrawer.moveTo(startX, startY);
-            this._debugDrawer.lineTo(endX, endY);
+                this._debugDrawer.lineStyle(1, bone.ik ? 0xFF0000 : 0x00FF00, 0.5);
+                this._debugDrawer.moveTo(startX, startY);
+                this._debugDrawer.lineTo(endX, endY);
+            }
+        } else if (this._debugDrawer && this._debugDrawer.parent === this) {
+            this.removeChild(this._debugDrawer);
         }
     }
     /**

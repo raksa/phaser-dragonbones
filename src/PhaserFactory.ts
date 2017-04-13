@@ -63,7 +63,9 @@ class PhaserFactory extends dragonBones.BaseFactory {
     /**
      * @private
      */
-    protected _generateSlot(dataPackage: dragonBones.BuildArmaturePackage, slotDisplayDataSet: any): dragonBones.Slot {
+    protected _generateSlot(dataPackage: dragonBones.BuildArmaturePackage,
+        slotDisplayDataSet: dragonBones.SlotDisplayDataSet): dragonBones.Slot {
+
         const slot = dragonBones.BaseObject.borrowObject(PhaserSlot);
         const slotData = slotDisplayDataSet.slot;
         const displayList = [];
@@ -76,7 +78,7 @@ class PhaserFactory extends dragonBones.BaseFactory {
         for (let i = 0, l = slotDisplayDataSet.displays.length; i < l; ++i) {
             const displayData = slotDisplayDataSet.displays[i];
             switch (displayData.type) {
-                case DisplayType.Image:
+                case dragonBones.DisplayType.Image:
                     if (!displayData.texture) {
                         displayData.texture = this._getTextureData(dataPackage.dataName, displayData.name);
                     }
@@ -84,7 +86,7 @@ class PhaserFactory extends dragonBones.BaseFactory {
                     displayList.push(slot._rawDisplay);
                     break;
 
-                case DisplayType.Mesh:
+                case dragonBones.DisplayType.Mesh:
                     if (!displayData.texture) {
                         displayData.texture = this._getTextureData(dataPackage.dataName, displayData.name);
                     }
@@ -92,7 +94,7 @@ class PhaserFactory extends dragonBones.BaseFactory {
                     displayList.push(slot._meshDisplay);
                     break;
 
-                case DisplayType.Armature:
+                case dragonBones.DisplayType.Armature:
                     const childArmature = this.buildArmature(displayData.name, dataPackage.dataName);
                     if (childArmature) {
                         if (!slot.inheritAnimation) {

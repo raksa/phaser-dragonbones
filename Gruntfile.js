@@ -3,7 +3,7 @@ module.exports = function (grunt) {
     ts: {
       default : {
         src: ["src/*"],
-        out: "built/PhaserBones.js"
+        out: "built/dragonBonesPhaser.js"
       }
     },
     clean: ["built"]
