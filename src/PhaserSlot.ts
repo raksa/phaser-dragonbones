@@ -1,4 +1,6 @@
 class PhaserSlot extends dragonBones.Slot {
+    public game: Phaser.Game;
+
     public static toString(): string {
         return "[class PhaserSlot]";
     }
@@ -28,7 +30,7 @@ class PhaserSlot extends dragonBones.Slot {
 
     protected _onUpdateDisplay(): void {
         if (!this._rawDisplay) {
-            this._rawDisplay = new Phaser.Sprite(game, 0, 0);
+            this._rawDisplay = new Phaser.Sprite(this.game, 0, 0);
         }
 
         this._renderDisplay = <Phaser.Sprite>(this._display || this._rawDisplay);
