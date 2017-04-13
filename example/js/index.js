@@ -5,8 +5,10 @@ var sprite;
 var index = -1;
 
 new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
-    preload: function () {
+    init: function () {
         this.dragonBonesPlugin = this.game.plugins.add(Rift.DragonBonesPlugin);
+    },
+    preload: function () {
         this.dragonBonesPlugin.AddResourceByName(model,
             "Swordsman/SwordsMan_ske.json", "Swordsman/SwordsMan_tex.json", "Swordsman/SwordsMan_tex.png");
         this.dragonBonesPlugin.LoadResources();
