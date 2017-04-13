@@ -1,160 +1,164 @@
-class PhaserFactory extends dragonBones.BaseFactory {
+namespace dragonBones {
 
-    public game: Phaser.Game;
+    export class PhaserFactory extends BaseFactory {
 
-    private static _factory: PhaserFactory = null;
+        public game: Phaser.Game;
 
-    public static _eventManager: PhaserArmatureDisplay = null;
+        private static _factory: PhaserFactory = null;
 
-    public static _clock: dragonBones.WorldClock = null;
+        public static _eventManager: PhaserArmatureDisplay = null;
 
-    public static _clockHandler(passedTime: number): void {
-        PhaserFactory._clock.advanceTime(-1); // passedTime !?
-    }
+        public static _clock: WorldClock = null;
 
-    public static get factory(game: Phaser.Game): PhaserFactory {
-        if (!PhaserFactory._factory) {
-            PhaserFactory._factory = new PhaserFactory(null, game);
+        public static _clockHandler(passedTime: number): void {
+            PhaserFactory._clock.advanceTime(-1); // passedTime !?
         }
 
-        return PhaserFactory._factory;
-    }
+        public static get factory(game: Phaser.Game): PhaserFactory {
+            if (!PhaserFactory._factory) {
+                PhaserFactory._factory = new PhaserFactory(null, game);
+            }
 
-    public constructor(dataParser: dragonBones.DataParser = null, game: Phaser.Game) {
-        super(dataParser);
-
-        this.game = game;
-
-        if (!PhaserFactory._eventManager) {
-            PhaserFactory._eventManager = new PhaserArmatureDisplay(game);
-            PhaserFactory._clock = new dragonBones.WorldClock();
-        }
-    }
-
-    protected _generateTextureAtlasData(textureAtlasData: PhaserTextureAtlasData, textureAtlas: PIXI.BaseTexture): PhaserTextureAtlasData {
-        if (textureAtlasData) {
-            textureAtlasData.texture = textureAtlas;
-        } else {
-            textureAtlasData = dragonBones.BaseObject.borrowObject(PhaserTextureAtlasData);
+            return PhaserFactory._factory;
         }
 
-        return textureAtlasData;
-    }
-    /**
-     * @private
-     */
-    protected _generateArmature(dataPackage: dragonBones.BuildArmaturePackage): dragonBones.Armature {
-        const armature = dragonBones.BaseObject.borrowObject(dragonBones.Armature);
-        const armatureDisplayContainer = new PhaserArmatureDisplay(this.game);
+        public constructor(dataParser: DataParser = null, game: Phaser.Game) {
+            super(dataParser);
 
-        armature._armatureData = dataPackage.armature;
-        armature._skinData = dataPackage.skin;
-        armature._animation = dragonBones.BaseObject.borrowObject(dragonBones.Animation);
-        armature._display = armatureDisplayContainer;
-        armature._eventManager = PhaserFactory._eventManager;
+            this.game = game;
 
-        armatureDisplayContainer._armature = armature;
-        armature._animation._armature = armature;
+            if (!PhaserFactory._eventManager) {
+                PhaserFactory._eventManager = new PhaserArmatureDisplay(game);
+                PhaserFactory._clock = new WorldClock();
+            }
+        }
 
-        armature.animation.animations = dataPackage.armature.animations;
+        protected _generateTextureAtlasData(textureAtlasData: PhaserTextureAtlasData, textureAtlas: PIXI.BaseTexture): PhaserTextureAtlasData {
+            if (textureAtlasData) {
+                textureAtlasData.texture = textureAtlas;
+            } else {
+                textureAtlasData = BaseObject.borrowObject(PhaserTextureAtlasData);
+            }
 
-        return armature;
-    }
-    /**
-     * @private
-     */
-    protected _generateSlot(dataPackage: dragonBones.BuildArmaturePackage,
-        slotDisplayDataSet: dragonBones.SlotDisplayDataSet): dragonBones.Slot {
+            return textureAtlasData;
+        }
+        /**
+         * @private
+         */
+        protected _generateArmature(dataPackage: BuildArmaturePackage): Armature {
+            const armature = BaseObject.borrowObject(Armature);
+            const armatureDisplayContainer = new PhaserArmatureDisplay(this.game);
 
-        const slot = dragonBones.BaseObject.borrowObject(PhaserSlot);
-        const slotData = slotDisplayDataSet.slot;
-        const displayList = [];
+            armature._armatureData = dataPackage.armature;
+            armature._skinData = dataPackage.skin;
+            armature._animation = BaseObject.borrowObject(Animation);
+            armature._display = armatureDisplayContainer;
+            armature._eventManager = PhaserFactory._eventManager;
 
-        slot.game = this.game;
-        slot.name = slotData.name;
-        slot._rawDisplay = new Phaser.Sprite(this.game, 0, 0);
-        slot._meshDisplay = null;
+            armatureDisplayContainer._armature = armature;
+            armature._animation._armature = armature;
 
-        for (let i = 0, l = slotDisplayDataSet.displays.length; i < l; ++i) {
-            const displayData = slotDisplayDataSet.displays[i];
-            switch (displayData.type) {
-                case dragonBones.DisplayType.Image:
-                    if (!displayData.texture) {
-                        displayData.texture = this._getTextureData(dataPackage.dataName, displayData.name);
-                    }
+            armature.animation.animations = dataPackage.armature.animations;
 
-                    displayList.push(slot._rawDisplay);
-                    break;
+            return armature;
+        }
+        /**
+         * @private
+         */
+        protected _generateSlot(dataPackage: BuildArmaturePackage,
+            slotDisplayDataSet: SlotDisplayDataSet): Slot {
 
-                case dragonBones.DisplayType.Mesh:
-                    if (!displayData.texture) {
-                        displayData.texture = this._getTextureData(dataPackage.dataName, displayData.name);
-                    }
+            const slot = BaseObject.borrowObject(PhaserSlot);
+            const slotData = slotDisplayDataSet.slot;
+            const displayList = [];
 
-                    displayList.push(slot._meshDisplay);
-                    break;
+            slot.game = this.game;
+            slot.name = slotData.name;
+            slot._rawDisplay = new Phaser.Sprite(this.game, 0, 0);
+            slot._meshDisplay = null;
 
-                case dragonBones.DisplayType.Armature:
-                    const childArmature = this.buildArmature(displayData.name, dataPackage.dataName);
-                    if (childArmature) {
-                        if (!slot.inheritAnimation) {
-                            const actions = slotData.actions.length > 0 ? slotData.actions : childArmature.armatureData.actions;
-                            if (actions.length > 0) {
-                                for (let i = 0, l = actions.length; i < l; ++i) {
-                                    childArmature._bufferAction(actions[i]);
-                                }
-                            }
-                            else {
-                                childArmature.animation.play();
-                            }
+            for (let i = 0, l = slotDisplayDataSet.displays.length; i < l; ++i) {
+                const displayData = slotDisplayDataSet.displays[i];
+                switch (displayData.type) {
+                    case DisplayType.Image:
+                        if (!displayData.texture) {
+                            displayData.texture = this._getTextureData(dataPackage.dataName, displayData.name);
                         }
 
-                        displayData.armature = childArmature.armatureData; // 
-                    }
+                        displayList.push(slot._rawDisplay);
+                        break;
 
-                    displayList.push(childArmature);
-                    break;
+                    case DisplayType.Mesh:
+                        if (!displayData.texture) {
+                            displayData.texture = this._getTextureData(dataPackage.dataName, displayData.name);
+                        }
 
-                default:
-                    displayList.push(null);
-                    break;
+                        displayList.push(slot._meshDisplay);
+                        break;
+
+                    case DisplayType.Armature:
+                        const childArmature = this.buildArmature(displayData.name, dataPackage.dataName);
+                        if (childArmature) {
+                            if (!slot.inheritAnimation) {
+                                const actions = slotData.actions.length > 0 ? slotData.actions : childArmature.armatureData.actions;
+                                if (actions.length > 0) {
+                                    for (let i = 0, l = actions.length; i < l; ++i) {
+                                        childArmature._bufferAction(actions[i]);
+                                    }
+                                }
+                                else {
+                                    childArmature.animation.play();
+                                }
+                            }
+
+                            displayData.armature = childArmature.armatureData; // 
+                        }
+
+                        displayList.push(childArmature);
+                        break;
+
+                    default:
+                        displayList.push(null);
+                        break;
+                }
             }
+
+            slot._setDisplayList(displayList);
+
+            return slot;
         }
 
-        slot._setDisplayList(displayList);
-
-        return slot;
-    }
-
-    public buildArmatureDisplay(armatureName: string, dragonBonesName: string = null, skinName: string = null): PhaserArmatureDisplay {
-        const armature = this.buildArmature(armatureName, dragonBonesName, skinName);
-        const armatureDisplay = armature ? <PhaserArmatureDisplay>armature._display : null;
-        if (armatureDisplay) {
-            armatureDisplay.advanceTimeBySelf(true);
+        public buildArmatureDisplay(armatureName: string, dragonBonesName: string = null, skinName: string = null): PhaserArmatureDisplay {
+            const armature = this.buildArmature(armatureName, dragonBonesName, skinName);
+            const armatureDisplay = armature ? <PhaserArmatureDisplay>armature._display : null;
+            if (armatureDisplay) {
+                armatureDisplay.advanceTimeBySelf(true);
+            }
+            return armatureDisplay;
         }
-        return armatureDisplay;
-    }
 
-    public getTextureDisplay(textureName: string, dragonBonesName: string = null): Phaser.Sprite {
-        const textureData = <PhaserTextureData>this._getTextureData(dragonBonesName, textureName);
-        if (textureData) {
-            if (!textureData.texture) {
-                const textureAtlasTexture = (<PhaserTextureAtlasData>textureData.parent).texture;
-                const originSize = new Phaser.Rectangle(0, 0, textureData.region.width, textureData.region.height);
-                textureData.texture = new PIXI.Texture(
-                    textureAtlasTexture,
-                    <PIXI.Rectangle><any>textureData.region,
-                    <PIXI.Rectangle><any>originSize
-                );
+        public getTextureDisplay(textureName: string, dragonBonesName: string = null): Phaser.Sprite {
+            const textureData = <PhaserTextureData>this._getTextureData(dragonBonesName, textureName);
+            if (textureData) {
+                if (!textureData.texture) {
+                    const textureAtlasTexture = (<PhaserTextureAtlasData>textureData.parent).texture;
+                    const originSize = new Phaser.Rectangle(0, 0, textureData.region.width, textureData.region.height);
+                    textureData.texture = new PIXI.Texture(
+                        textureAtlasTexture,
+                        <PIXI.Rectangle><any>textureData.region,
+                        <PIXI.Rectangle><any>originSize
+                    );
+                }
+
+                return new Phaser.Sprite(this.game, 0, 0, textureData.texture);
             }
 
-            return new Phaser.Sprite(this.game, 0, 0, textureData.texture);
+            return null;
         }
 
-        return null;
+        public get soundEventManater(): PhaserArmatureDisplay {
+            return PhaserFactory._eventManager;
+        }
     }
 
-    public get soundEventManater(): PhaserArmatureDisplay {
-        return PhaserFactory._eventManager;
-    }
 }
