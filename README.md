@@ -39,9 +39,16 @@ test example in  "example" folder
 Usage
 ===
 
+Current test version:
+
+* Phaser: 2.6.2
+
+* DragonBones API: 4.5
+
 #### include
 
 ```html
+<script src="example/lib/dragonBones.js"></script>
 <script src="built/dragonBonesPhaser.min.js"></script>
 ```
 
