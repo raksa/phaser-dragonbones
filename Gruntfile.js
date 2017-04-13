@@ -2,12 +2,14 @@ module.exports = function (grunt) {
   grunt.initConfig({
     ts: {
       default : {
-        src: ["PhaserBones.ts"],
-        outDir: "built"
+        src: ["src/*"],
+        out: "built/PhaserBones.js"
       }
-    }
+    },
+    clean: ["built"]
   });
   grunt.loadNpmTasks("grunt-ts");
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
-  grunt.registerTask("build", ["ts"]);
+  grunt.registerTask("build", ["clean", "ts"]);
 };
