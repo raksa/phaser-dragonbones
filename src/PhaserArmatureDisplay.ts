@@ -118,17 +118,6 @@ namespace dragonBones {
             return this._armature.animation;
         }
 
-        public animate(key: string): void {
-
-            if (this.animation.lastAnimationName == key) return;
-
-            this.animation.play(key);
-            for (var i = this.children.length - 1; i >= 0; i--) {
-                var item = this.getChildAt(i);
-                if ((<any>item).texture == null) this.removeChildAt(i);
-            }
-
-        }
     }
 
 }
