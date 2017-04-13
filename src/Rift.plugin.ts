@@ -1,4 +1,3 @@
-//PLUGIN
 module Rift {
     export class PhaserBones extends Phaser.Plugin {
         private static ObjDictionary: { [key: string]: PhaserBones.Object } = {}

@@ -1,4 +1,4 @@
-export class PhaserSlot extends dragonBones.Slot {
+class PhaserSlot extends dragonBones.Slot {
     public static toString(): string {
         return "[class PhaserSlot]";
     }
