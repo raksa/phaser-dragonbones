@@ -1,6 +1,6 @@
-export class PhaserArmatureDisplay extends Phaser.Sprite implements IArmatureDisplay {
+class PhaserArmatureDisplay extends Phaser.Sprite implements dragonBones.IArmatureDisplay {
 
-    public _armature: Armature;
+    public _armature: dragonBones.Armature;
 
     public maxX: number = 0;
     public maxY: number = 0;
@@ -28,7 +28,7 @@ export class PhaserArmatureDisplay extends Phaser.Sprite implements IArmatureDis
         this.destroy(true);
     }
 
-    public _dispatchEvent(eventObject: EventObject): void {
+    public _dispatchEvent(eventObject: dragonBones.EventObject): void {
         //this.emit(eventObject.type, eventObject);
     }
 
@@ -57,20 +57,20 @@ export class PhaserArmatureDisplay extends Phaser.Sprite implements IArmatureDis
     /**
      * @inheritDoc
      */
-    public hasEvent(type: EventStringType): boolean {
+    public hasEvent(type: dragonBones.EventStringType): boolean {
         //return <boolean>this.listeners(type, true);
         return false;
     }
     /**
      * @inheritDoc
      */
-    public addEvent(type: EventStringType, listener: (event: EventObject) => void, target: any): void {
+    public addEvent(type: dragonBones.EventStringType, listener: (event: dragonBones.EventObject) => void, target: any): void {
         //this.addListener(type, listener, target);
     }
     /**
      * @inheritDoc
      */
-    public removeEvent(type: EventStringType, listener: (event: EventObject) => void, target: any): void {
+    public removeEvent(type: dragonBones.EventStringType, listener: (event: dragonBones.EventObject) => void, target: any): void {
         //this.removeListener(type, listener, target);
     }
     /**
@@ -97,13 +97,13 @@ export class PhaserArmatureDisplay extends Phaser.Sprite implements IArmatureDis
     /**
      * @inheritDoc
      */
-    public get armature(): Armature {
+    public get armature(): dragonBones.Armature {
         return this._armature;
     }
     /**
      * @inheritDoc
      */
-    public get animation(): Animation {
+    public get animation(): dragonBones.Animation {
         return this._armature.animation;
     }
 

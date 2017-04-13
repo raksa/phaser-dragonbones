@@ -1,9 +1,9 @@
-export class PhaserFactory extends dragonBones.BaseFactory {
+class PhaserFactory extends dragonBones.BaseFactory {
     private static _factory: PhaserFactory = null;
 
     public static _eventManager: PhaserArmatureDisplay = null;
 
-    public static _clock: WorldClock = null;
+    public static _clock: dragonBones.WorldClock = null;
 
     public static _clockHandler(passedTime: number): void {
         PhaserFactory._clock.advanceTime(-1); // passedTime !?
@@ -17,7 +17,7 @@ export class PhaserFactory extends dragonBones.BaseFactory {
         return PhaserFactory._factory;
     }
 
-    public constructor(dataParser: DataParser = null) {
+    public constructor(dataParser: dragonBones.DataParser = null) {
         super(dataParser);
 
         if (!PhaserFactory._eventManager) {
@@ -38,7 +38,7 @@ export class PhaserFactory extends dragonBones.BaseFactory {
     /**
      * @private
      */
-    protected _generateArmature(dataPackage: BuildArmaturePackage): Armature {
+    protected _generateArmature(dataPackage: dragonBones.BuildArmaturePackage): dragonBones.Armature {
         const armature = dragonBones.BaseObject.borrowObject(dragonBones.Armature);
         const armatureDisplayContainer = new PhaserArmatureDisplay();
 
@@ -58,7 +58,7 @@ export class PhaserFactory extends dragonBones.BaseFactory {
     /**
      * @private
      */
-    protected _generateSlot(dataPackage: BuildArmaturePackage, slotDisplayDataSet: SlotDisplayDataSet): dragonBones.Slot {
+    protected _generateSlot(dataPackage: dragonBones.BuildArmaturePackage, slotDisplayDataSet: any): dragonBones.Slot {
         const slot = dragonBones.BaseObject.borrowObject(PhaserSlot);
         const slotData = slotDisplayDataSet.slot;
         const displayList = [];
