@@ -14,6 +14,12 @@ Installing
 
 Make clone
 ````
+Clone without submodules
+
+> git clone https://github.com/raksa/phaser-dragonbones.git
+
+Clone with submodules (will make big size of transfer git repo)
+
 > git clone --recurse-submodules https://github.com/raksa/phaser-dragonbones.git
 
 ````
@@ -43,7 +49,9 @@ Current test version:
 
 * Phaser: 2.6.2
 
-* DragonBones API: 4.5
+* DragonBones API: 5.0
+
+* DragonBones Data Format: 4.5
 
 #### include
 

@@ -1,73 +1,70 @@
-module Rift {
+namespace Rift {
+    export const IMAGE: number = 2;
+    export const JSON: number = 11;
+    export const VERSION: string = "0.1";
+    
     export class DragonBonesPlugin extends Phaser.Plugin {
         private static ObjDictionary: {
-            [key: string]: DragonBonesPlugin.Object
+            [key: string]: DragonBonesObject
         } = {};
         private Suffix: string = "DragonBonesPlugin";
         public ImageSuffix: string = '_Image_' + this.Suffix;
         public TextureSuffix: string = '_TextureMap_' + this.Suffix;
         public BonesSuffix: string = '_Bones_' + this.Suffix;
-        public static IMAGE: number = 2;
-        public static JSON: number = 11;
-        public static instance: DragonBonesPlugin = null;
-
         constructor(game: Phaser.Game, parent: Phaser.PluginManager) {
-
             super(game, parent);
-
-            DragonBonesPlugin.instance = this;
         }
 
         AddResourceByName(key: string, skeletonJson: string, textureJson: string, texturePng: string): void {
-            this.AddResources(key, new Array<Rift.DragonBonesPlugin.Resource>(
-                new Rift.DragonBonesPlugin.Resource(Rift.DragonBonesPlugin.ResType.Image, texturePng)
-                , new Rift.DragonBonesPlugin.Resource(Rift.DragonBonesPlugin.ResType.TextureMap, textureJson)
-                , new Rift.DragonBonesPlugin.Resource(Rift.DragonBonesPlugin.ResType.Bones, skeletonJson)
+            this.AddResources(key, new Array<Resource>(
+                new Resource(ResType.Image, texturePng)
+                , new Resource(ResType.TextureMap, textureJson)
+                , new Resource(ResType.Bones, skeletonJson)
             )
             );
         }
-        AddResources(key: string, res: DragonBonesPlugin.Resource[]): void {
+        AddResources(key: string, res: Resource[]): void {
             for (var i = 0; i < res.length; i++) {
                 this.AddResource(key, res[i]);
             }
         }
 
-        AddResource(key: string, res: DragonBonesPlugin.Resource): void {
+        AddResource(key: string, res: Resource): void {
             key = key.toLowerCase();
             var updated: boolean = false;
             for (var resKey in DragonBonesPlugin.ObjDictionary) {
                 if (resKey == key) {
-                    if (DragonBonesPlugin.ObjDictionary[resKey].Resources.filter(function (resource) {
-                        return resource.Type === res.Type;
-                    }).length == 0) DragonBonesPlugin.ObjDictionary[resKey].Resources.push(res);
+                    if (DragonBonesPlugin.ObjDictionary[resKey].resources.filter(function (resource) {
+                        return resource.type === res.type;
+                    }).length == 0) DragonBonesPlugin.ObjDictionary[resKey].resources.push(res);
                     updated = true;
                     break;
                 }
             }
             if (!updated) {
-                DragonBonesPlugin.ObjDictionary[key] = new DragonBonesPlugin.Object(new Array<DragonBonesPlugin.Resource>());
-                DragonBonesPlugin.ObjDictionary[key].Resources.push(res);
+                DragonBonesPlugin.ObjDictionary[key] = new DragonBonesObject(this.game, new Array<Resource>());
+                DragonBonesPlugin.ObjDictionary[key].resources.push(res);
             }
         }
 
         LoadResources(): void {
             for (var resKey in DragonBonesPlugin.ObjDictionary) {
-                var resources: DragonBonesPlugin.Resource[] = DragonBonesPlugin.ObjDictionary[resKey].Resources;
+                var resources: Resource[] = DragonBonesPlugin.ObjDictionary[resKey].resources;
                 for (var i = 0; i < resources.length; i++) {
                     var item = resources[i];
-                    if (item.Loaded) continue;
-                    switch (item.Type) {
-                        case DragonBonesPlugin.ResType.Image:
-                            this.game.load.image(resKey + this.ImageSuffix, item.FilePath);
+                    if (item.loaded) continue;
+                    switch (item.type) {
+                        case ResType.Image:
+                            this.game.load.image(resKey + this.ImageSuffix, item.filePath);
                             break;
-                        case DragonBonesPlugin.ResType.TextureMap:
-                            this.game.load.json(resKey + this.TextureSuffix, item.FilePath);
+                        case ResType.TextureMap:
+                            this.game.load.json(resKey + this.TextureSuffix, item.filePath);
                             break;
-                        case DragonBonesPlugin.ResType.Bones:
-                            this.game.load.json(resKey + this.BonesSuffix, item.FilePath);
+                        case ResType.Bones:
+                            this.game.load.json(resKey + this.BonesSuffix, item.filePath);
                             break;
                     }
-                    item.Loaded = true;
+                    item.loaded = true;
                 }
             }
         }
@@ -77,26 +74,26 @@ module Rift {
             for (var reskey in DragonBonesPlugin.ObjDictionary) {
                 if (key && reskey != key) continue;
                 var oItem = DragonBonesPlugin.ObjDictionary[reskey];
-                var item = new DragonBonesPlugin.Object(oItem.Resources);
+                var item = new DragonBonesObject(this.game, oItem.resources);
                 var image = null;
                 var texture = null;
                 var bones = null;
-                for (var i = 0; i < item.Resources.length; i++) {
-                    var res = item.Resources[i];
-                    switch (res.Type) {
-                        case DragonBonesPlugin.ResType.Image:
-                            image = this.game.cache.getItem(reskey + this.ImageSuffix, Rift.DragonBonesPlugin.IMAGE).data;
+                for (var i = 0; i < item.resources.length; i++) {
+                    var res = item.resources[i];
+                    switch (res.type) {
+                        case ResType.Image:
+                            image = this.game.cache.getItem(reskey + this.ImageSuffix, IMAGE).data;
                             break;
-                        case DragonBonesPlugin.ResType.TextureMap:
-                            texture = this.game.cache.getItem(reskey + this.TextureSuffix, Rift.DragonBonesPlugin.JSON).data;
+                        case ResType.TextureMap:
+                            texture = this.game.cache.getItem(reskey + this.TextureSuffix, JSON).data;
                             break;
-                        case DragonBonesPlugin.ResType.Bones:
-                            bones = this.game.cache.getItem(reskey + this.BonesSuffix, Rift.DragonBonesPlugin.JSON).data;
+                        case ResType.Bones:
+                            bones = this.game.cache.getItem(reskey + this.BonesSuffix, JSON).data;
                             break;
                     }
                 }
-                item.Skeleton = item.Factory.parseDragonBonesData(bones);
-                item.Factory.parseTextureAtlasData(texture, image);
+                item.skeleton = item.factory.parseDragonBonesData(bones);
+                item.factory.parseTextureAtlasData(texture, image);
                 return item;
             }
             return null;
@@ -104,11 +101,11 @@ module Rift {
 
         GetArmature(key: string, armatureName?: string): dragonBones.PhaserArmatureDisplay {
             var item = this.CreateFactoryItem(key);
-            if (armatureName == null) armatureName = item.Skeleton.armatureNames[0];
-            var armature = item.Factory.buildArmatureDisplay(armatureName);
-            item.Armature = armature;
+            if (armatureName == null) armatureName = item.skeleton.armatureNames[0];
+            var armature = item.factory.buildArmatureDisplay(armatureName);
+            item.armature = armature;
             this.RefreshClock();
-            return item.Armature;
+            return item.armature;
         }
 
         RefreshClock(): void {
@@ -124,32 +121,29 @@ module Rift {
         }
     }
 
-    export module DragonBonesPlugin {
-        export class Object {
-            public Resources: DragonBonesPlugin.Resource[];
-            public Skeleton: dragonBones.DragonBonesData;
-            public Factory: dragonBones.PhaserFactory = new dragonBones.PhaserFactory(null, DragonBonesPlugin.instance.game);
-            public Armature: dragonBones.PhaserArmatureDisplay;
-            constructor(resources: DragonBonesPlugin.Resource[]) {
-                this.Resources = resources;
-            }
+    class DragonBonesObject {
+        public resources: Resource[];
+        public skeleton: dragonBones.DragonBonesData;
+        public factory: dragonBones.PhaserFactory;
+        public armature: dragonBones.PhaserArmatureDisplay;
+        constructor(game: Phaser.Game, resources: Resource[]) {
+            this.factory = new dragonBones.PhaserFactory(null, game);
+            this.resources = resources;
         }
-
-        export class Resource {
-            public Type: DragonBonesPlugin.ResType;
-            public FilePath: string;
-            public Loaded: boolean = false;
-            public CacheKey: string;
-            constructor(type: DragonBonesPlugin.ResType, filepath: string) {
-                this.Type = type;
-                this.FilePath = filepath;
-            }
+    }
+    class Resource {
+        public type: ResType;
+        public filePath: string;
+        public loaded: boolean = false;
+        public cacheKey: string;
+        constructor(type: ResType, filePath: string) {
+            this.type = type;
+            this.filePath = filePath;
         }
-
-        export enum ResType {
-            Image
-            , TextureMap
-            , Bones
-        }
+    }
+    enum ResType {
+        Image
+        , TextureMap
+        , Bones
     }
 }
