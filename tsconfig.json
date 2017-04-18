@@ -8,8 +8,9 @@
     },
     "include": [
         "src",
-        "DragonBonesJS/DragonBones/build/dragonBones.d.ts"
+        "DragonBonesJS/DragonBones/build/dragonBones.d.ts",
+        "phaser/typescript/phaser.d.ts",
+        "phaser/typescript/pixi.d.ts"
     ],
-    "exclude": [
-    ]
+    "exclude": []
 }
