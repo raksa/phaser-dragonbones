@@ -14,23 +14,23 @@ Installing
 
 Make clone
 ````
->git clone --recurse-submodules https://github.com/raksa/phaser-dragonbones.git
+> git clone --recurse-submodules https://github.com/raksa/phaser-dragonbones.git
 
 ````
 
 Make compiling
 ````
->cd phaser-dragonbones
+> cd phaser-dragonbones
 
->npm install
+> npm install
 
->npm run compile
+> npm run compile
 
 ````
 
 Make running
 ````
->npm run start
+> npm run start
 
 test example in  "example" folder
 
