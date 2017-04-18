@@ -1,6 +1,6 @@
 {
   "name": "phaser-dragonbones",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Phaser plugin for DragonBones animator",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,7 +15,7 @@
     "Phaser",
     "Phasr-DragonBones"
   ],
-  "author": "Raksa Eng",
+  "author": "Raksa Eng <eng.raksa@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/raksa/phaser-dragonbones/issues"

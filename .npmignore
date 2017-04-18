@@ -1,0 +1,9 @@
+build
+DragonBonesJS
+phaser
+screenshot
+src
+.npmignore
+.gitmodules
+bower.json
+tsconfig.json
