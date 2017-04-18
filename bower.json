@@ -20,6 +20,8 @@
     "DragonBonesJS",
     "phaser",
     "screenshot",
-    "src"
+    "src",
+    "tsconfig.json",
+    ""
   ]
 }
