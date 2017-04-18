@@ -1,6 +1,10 @@
 "use strict";
 
-var model = "Swordsman";
+var model = "key";
+
+// var prefix = "Swordsman/SwordsMan_";
+var prefix = "Rooster_Ani/Rooster_Ani_";
+
 var sprite;
 var index = -1;
 
@@ -10,7 +14,7 @@ new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
     },
     preload: function () {
         this.dragonBonesPlugin.addResourceByNames(model,
-            "Swordsman/SwordsMan_ske.json", "Swordsman/SwordsMan_tex.json", "Swordsman/SwordsMan_tex.png");
+            prefix + "ske.json", prefix + "tex.json", prefix + "tex.png");
         this.dragonBonesPlugin.loadResources();
     },
     create: function () {
