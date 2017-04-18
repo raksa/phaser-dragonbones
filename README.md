@@ -106,3 +106,8 @@ Via npm
 
 }
 ```
+
+Need Help
+===
+
+This plugin can't support kind of mesh rendering yet
