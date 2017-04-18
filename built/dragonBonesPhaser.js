@@ -14,6 +14,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Rift;
 (function (Rift) {
+    Rift.IMAGE = 2;
+    Rift.JSON = 11;
+    Rift.VERSION = "0.1";
     var DragonBonesPlugin = (function (_super) {
         __extends(DragonBonesPlugin, _super);
         function DragonBonesPlugin(game, parent) {
@@ -22,97 +25,96 @@ var Rift;
             _this.ImageSuffix = '_Image_' + _this.Suffix;
             _this.TextureSuffix = '_TextureMap_' + _this.Suffix;
             _this.BonesSuffix = '_Bones_' + _this.Suffix;
-            DragonBonesPlugin.instance = _this;
             return _this;
         }
-        DragonBonesPlugin.prototype.AddResourceByName = function (key, skeletonJson, textureJson, texturePng) {
-            this.AddResources(key, new Array(new Rift.DragonBonesPlugin.Resource(Rift.DragonBonesPlugin.ResType.Image, texturePng), new Rift.DragonBonesPlugin.Resource(Rift.DragonBonesPlugin.ResType.TextureMap, textureJson), new Rift.DragonBonesPlugin.Resource(Rift.DragonBonesPlugin.ResType.Bones, skeletonJson)));
+        DragonBonesPlugin.prototype.addResourceByNames = function (key, skeletonJson, textureJson, texturePng) {
+            this.addResources(key, new Array(new Resource(ResType.Image, texturePng), new Resource(ResType.TextureMap, textureJson), new Resource(ResType.Bones, skeletonJson)));
         };
-        DragonBonesPlugin.prototype.AddResources = function (key, res) {
-            for (var i = 0; i < res.length; i++) {
-                this.AddResource(key, res[i]);
+        DragonBonesPlugin.prototype.addResources = function (key, resources) {
+            for (var i = 0; i < resources.length; i++) {
+                this.addResource(key, resources[i]);
             }
         };
-        DragonBonesPlugin.prototype.AddResource = function (key, res) {
+        DragonBonesPlugin.prototype.addResource = function (key, res) {
             key = key.toLowerCase();
             var updated = false;
             for (var resKey in DragonBonesPlugin.ObjDictionary) {
                 if (resKey == key) {
-                    if (DragonBonesPlugin.ObjDictionary[resKey].Resources.filter(function (resource) {
-                        return resource.Type === res.Type;
+                    if (DragonBonesPlugin.ObjDictionary[resKey].resources.filter(function (resource) {
+                        return resource.type === res.type;
                     }).length == 0)
-                        DragonBonesPlugin.ObjDictionary[resKey].Resources.push(res);
+                        DragonBonesPlugin.ObjDictionary[resKey].resources.push(res);
                     updated = true;
                     break;
                 }
             }
             if (!updated) {
-                DragonBonesPlugin.ObjDictionary[key] = new DragonBonesPlugin.Object(new Array());
-                DragonBonesPlugin.ObjDictionary[key].Resources.push(res);
+                DragonBonesPlugin.ObjDictionary[key] = new DragonBonesObject(this.game, new Array());
+                DragonBonesPlugin.ObjDictionary[key].resources.push(res);
             }
         };
-        DragonBonesPlugin.prototype.LoadResources = function () {
+        DragonBonesPlugin.prototype.loadResources = function () {
             for (var resKey in DragonBonesPlugin.ObjDictionary) {
-                var resources = DragonBonesPlugin.ObjDictionary[resKey].Resources;
+                var resources = DragonBonesPlugin.ObjDictionary[resKey].resources;
                 for (var i = 0; i < resources.length; i++) {
                     var item = resources[i];
-                    if (item.Loaded)
+                    if (item.loaded)
                         continue;
-                    switch (item.Type) {
-                        case DragonBonesPlugin.ResType.Image:
-                            this.game.load.image(resKey + this.ImageSuffix, item.FilePath);
+                    switch (item.type) {
+                        case ResType.Image:
+                            this.game.load.image(resKey + this.ImageSuffix, item.filePath);
                             break;
-                        case DragonBonesPlugin.ResType.TextureMap:
-                            this.game.load.json(resKey + this.TextureSuffix, item.FilePath);
+                        case ResType.TextureMap:
+                            this.game.load.json(resKey + this.TextureSuffix, item.filePath);
                             break;
-                        case DragonBonesPlugin.ResType.Bones:
-                            this.game.load.json(resKey + this.BonesSuffix, item.FilePath);
+                        case ResType.Bones:
+                            this.game.load.json(resKey + this.BonesSuffix, item.filePath);
                             break;
                     }
-                    item.Loaded = true;
+                    item.loaded = true;
                 }
             }
         };
-        DragonBonesPlugin.prototype.CreateFactoryItem = function (key) {
+        DragonBonesPlugin.prototype.createFactoryItem = function (key) {
             key = key.toLowerCase();
             for (var reskey in DragonBonesPlugin.ObjDictionary) {
                 if (key && reskey != key)
                     continue;
                 var oItem = DragonBonesPlugin.ObjDictionary[reskey];
-                var item = new DragonBonesPlugin.Object(oItem.Resources);
+                var item = new DragonBonesObject(this.game, oItem.resources);
                 var image = null;
                 var texture = null;
                 var bones = null;
-                for (var i = 0; i < item.Resources.length; i++) {
-                    var res = item.Resources[i];
-                    switch (res.Type) {
-                        case DragonBonesPlugin.ResType.Image:
-                            image = this.game.cache.getItem(reskey + this.ImageSuffix, Rift.DragonBonesPlugin.IMAGE).data;
+                for (var i = 0; i < item.resources.length; i++) {
+                    var res = item.resources[i];
+                    switch (res.type) {
+                        case ResType.Image:
+                            image = this.game.cache.getItem(reskey + this.ImageSuffix, Rift.IMAGE).data;
                             break;
-                        case DragonBonesPlugin.ResType.TextureMap:
-                            texture = this.game.cache.getItem(reskey + this.TextureSuffix, Rift.DragonBonesPlugin.JSON).data;
+                        case ResType.TextureMap:
+                            texture = this.game.cache.getItem(reskey + this.TextureSuffix, Rift.JSON).data;
                             break;
-                        case DragonBonesPlugin.ResType.Bones:
-                            bones = this.game.cache.getItem(reskey + this.BonesSuffix, Rift.DragonBonesPlugin.JSON).data;
+                        case ResType.Bones:
+                            bones = this.game.cache.getItem(reskey + this.BonesSuffix, Rift.JSON).data;
                             break;
                     }
                 }
-                item.Skeleton = item.Factory.parseDragonBonesData(bones);
-                item.Factory.parseTextureAtlasData(texture, image);
+                item.skeleton = item.factory.parseDragonBonesData(bones);
+                item.factory.parseTextureAtlasData(texture, image);
                 return item;
             }
             return null;
         };
-        DragonBonesPlugin.prototype.GetArmature = function (key, armatureName) {
-            var item = this.CreateFactoryItem(key);
+        DragonBonesPlugin.prototype.getArmature = function (key, armatureName) {
+            var item = this.createFactoryItem(key);
             if (armatureName == null)
-                armatureName = item.Skeleton.armatureNames[0];
-            var armature = item.Factory.buildArmatureDisplay(armatureName);
-            item.Armature = armature;
-            this.RefreshClock();
-            return item.Armature;
+                armatureName = item.skeleton.armatureNames[0];
+            var armature = item.factory.buildArmatureDisplay(armatureName);
+            item.armature = armature;
+            this.refreshClock();
+            return item.armature;
         };
-        DragonBonesPlugin.prototype.RefreshClock = function () {
+        DragonBonesPlugin.prototype.refreshClock = function () {
             var hasEvent = false;
             var callback = dragonBones.PhaserFactory._clockHandler;
             this.game.time.events.events.forEach(function (event, index, array) {
@@ -127,35 +129,29 @@ var Rift;
         return DragonBonesPlugin;
     }(Phaser.Plugin));
     DragonBonesPlugin.ObjDictionary = {};
-    DragonBonesPlugin.IMAGE = 2;
-    DragonBonesPlugin.JSON = 11;
-    DragonBonesPlugin.instance = null;
     Rift.DragonBonesPlugin = DragonBonesPlugin;
-    (function (DragonBonesPlugin) {
-        var Object = (function () {
-            function Object(resources) {
-                this.Factory = new dragonBones.PhaserFactory(null, DragonBonesPlugin.instance.game);
-                this.Resources = resources;
-            }
-            return Object;
-        }());
-        DragonBonesPlugin.Object = Object;
-        var Resource = (function () {
-            function Resource(type, filepath) {
-                this.Loaded = false;
-                this.Type = type;
-                this.FilePath = filepath;
-            }
-            return Resource;
-        }());
-        DragonBonesPlugin.Resource = Resource;
-        var ResType;
-        (function (ResType) {
-            ResType[ResType["Image"] = 0] = "Image";
-            ResType[ResType["TextureMap"] = 1] = "TextureMap";
-            ResType[ResType["Bones"] = 2] = "Bones";
-        })(ResType = DragonBonesPlugin.ResType || (DragonBonesPlugin.ResType = {}));
-    })(DragonBonesPlugin = Rift.DragonBonesPlugin || (Rift.DragonBonesPlugin = {}));
+    var DragonBonesObject = (function () {
+        function DragonBonesObject(game, resources) {
+            this.factory = new dragonBones.PhaserFactory(null, game);
+            this.resources = resources;
+        }
+        return DragonBonesObject;
+    }());
+    var Resource = (function () {
+        function Resource(type, filePath) {
+            this.loaded = false;
+            this.type = type;
+            this.filePath = filePath;
+        }
+        return Resource;
+    }());
+    Rift.Resource = Resource;
+    var ResType;
+    (function (ResType) {
+        ResType[ResType["Image"] = 0] = "Image";
+        ResType[ResType["TextureMap"] = 1] = "TextureMap";
+        ResType[ResType["Bones"] = 2] = "Bones";
+    })(ResType = Rift.ResType || (Rift.ResType = {}));
 })(Rift || (Rift = {}));
 //HACK TO FIX NULL TEXTURE
 PIXI.Sprite.prototype.setTexture = function (texture, destroyBase) {

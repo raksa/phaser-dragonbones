@@ -15,21 +15,21 @@ namespace Rift {
             super(game, parent);
         }
 
-        AddResourceByName(key: string, skeletonJson: string, textureJson: string, texturePng: string): void {
-            this.AddResources(key, new Array<Resource>(
+        public addResourceByNames(key: string, skeletonJson: string, textureJson: string, texturePng: string): void {
+            this.addResources(key, new Array<Resource>(
                 new Resource(ResType.Image, texturePng)
                 , new Resource(ResType.TextureMap, textureJson)
                 , new Resource(ResType.Bones, skeletonJson)
             )
             );
         }
-        AddResources(key: string, res: Resource[]): void {
-            for (var i = 0; i < res.length; i++) {
-                this.AddResource(key, res[i]);
+        public addResources(key: string, resources: Resource[]): void {
+            for (var i = 0; i < resources.length; i++) {
+                this.addResource(key, resources[i]);
             }
         }
 
-        AddResource(key: string, res: Resource): void {
+        private addResource(key: string, res: Resource): void {
             key = key.toLowerCase();
             var updated: boolean = false;
             for (var resKey in DragonBonesPlugin.ObjDictionary) {
@@ -47,7 +47,7 @@ namespace Rift {
             }
         }
 
-        LoadResources(): void {
+        public loadResources(): void {
             for (var resKey in DragonBonesPlugin.ObjDictionary) {
                 var resources: Resource[] = DragonBonesPlugin.ObjDictionary[resKey].resources;
                 for (var i = 0; i < resources.length; i++) {
@@ -69,7 +69,7 @@ namespace Rift {
             }
         }
 
-        CreateFactoryItem(key: string) {
+        private createFactoryItem(key: string) {
             key = key.toLowerCase();
             for (var reskey in DragonBonesPlugin.ObjDictionary) {
                 if (key && reskey != key) continue;
@@ -99,16 +99,16 @@ namespace Rift {
             return null;
         }
 
-        GetArmature(key: string, armatureName?: string): dragonBones.PhaserArmatureDisplay {
-            var item = this.CreateFactoryItem(key);
+        getArmature(key: string, armatureName?: string): dragonBones.PhaserArmatureDisplay {
+            var item = this.createFactoryItem(key);
             if (armatureName == null) armatureName = item.skeleton.armatureNames[0];
             var armature = item.factory.buildArmatureDisplay(armatureName);
             item.armature = armature;
-            this.RefreshClock();
+            this.refreshClock();
             return item.armature;
         }
 
-        RefreshClock(): void {
+        public refreshClock(): void {
             var hasEvent: boolean = false;
             var callback = dragonBones.PhaserFactory._clockHandler;
             this.game.time.events.events.forEach(function (event, index, array) {
@@ -131,7 +131,7 @@ namespace Rift {
             this.resources = resources;
         }
     }
-    class Resource {
+    export class Resource {
         public type: ResType;
         public filePath: string;
         public loaded: boolean = false;
@@ -141,7 +141,7 @@ namespace Rift {
             this.filePath = filePath;
         }
     }
-    enum ResType {
+    export enum ResType {
         Image
         , TextureMap
         , Bones

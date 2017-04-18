@@ -9,16 +9,16 @@ new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
         this.dragonBonesPlugin = this.game.plugins.add(Rift.DragonBonesPlugin);
     },
     preload: function () {
-        this.dragonBonesPlugin.AddResourceByName(model,
+        this.dragonBonesPlugin.addResourceByNames(model,
             "Swordsman/SwordsMan_ske.json", "Swordsman/SwordsMan_tex.json", "Swordsman/SwordsMan_tex.png");
-        this.dragonBonesPlugin.LoadResources();
+        this.dragonBonesPlugin.loadResources();
     },
     create: function () {
         this.add.text(this.world.width / 2, 30, "Tap/Click to change animation").anchor.setTo(0.5);
 
         this.stage.backgroundColor = "#fefefe";
 
-        sprite = this.dragonBonesPlugin.GetArmature(model);
+        sprite = this.dragonBonesPlugin.getArmature(model);
         sprite.position.setTo(this.world.width / 2, 3 * this.world.height / 4);
         sprite.scale.setTo(0.6);
         this.world.add(sprite);
@@ -33,6 +33,6 @@ new Phaser.Game("100%", "100%", Phaser.CANVAS, '', {
         sprite.animation.play(names[index]);
     },
     update: function () {
-        // this.dragonBonesPlugin.RefreshClock(); // when switching states this needs called
+        // this.dragonBonesPlugin.refreshClock(); // when switching states this needs called
     }
 });
