@@ -1,7 +1,7 @@
 namespace Rift {
     export const IMAGE: number = 2;
     export const JSON: number = 11;
-    export const VERSION: string = "0.1";
+    export const VERSION: string = "0.0.2";
 
     export class DragonBonesPlugin extends Phaser.Plugin {
         private static objDictionary: {

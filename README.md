@@ -53,15 +53,17 @@ Current test version:
 
 * DragonBones Data Format: 4.5
 
-#### include
+#### include:
+
+Via bower
+````
+> bower install phaser-dragonbones
+````
 
 ```html
 <script src="example/lib/dragonBones.js"></script>
 <script src="built/dragonBonesPhaser.min.js"></script>
 ```
-
-#### include
-
 ```javascript
 {
 

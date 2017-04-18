@@ -1,8 +1,7 @@
 {
   "name": "phaser-dragonbones",
-  "version": "1.0.0",
-  "description": "Phasr plugin for dragonbones animator",
-  "main": "index.js",
+  "version": "0.0.2",
+  "description": "Phaser plugin for DragonBones animator",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "http-server -o",

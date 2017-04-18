@@ -1,0 +1,21 @@
+{
+  "name": "phaser-dragonbones",
+  "description": "Phaser plugin for DragonBones animator",
+  "main": "",
+  "authors": [
+    "Raksa Eng"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Phaser",
+    "Phasr-DragonBones"
+  ],
+  "homepage": "https://github.com/raksa/phaser-dragonbones",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
