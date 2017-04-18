@@ -31,56 +31,56 @@ var Rift;
             this.addResources(key, new Array(new Resource(ResType.Image, texturePng), new Resource(ResType.TextureMap, textureJson), new Resource(ResType.Bones, skeletonJson)));
         };
         DragonBonesPlugin.prototype.addResources = function (key, resources) {
-            for (var i = 0; i < resources.length; i++) {
-                this.addResource(key, resources[i]);
+            for (var _i = 0, resources_1 = resources; _i < resources_1.length; _i++) {
+                var resource = resources_1[_i];
+                this.addResource(key, resource);
             }
         };
         DragonBonesPlugin.prototype.addResource = function (key, res) {
             key = key.toLowerCase();
             var updated = false;
-            for (var resKey in DragonBonesPlugin.ObjDictionary) {
+            for (var resKey in DragonBonesPlugin.objDictionary) {
                 if (resKey == key) {
-                    if (DragonBonesPlugin.ObjDictionary[resKey].resources.filter(function (resource) {
+                    if (DragonBonesPlugin.objDictionary[resKey].resources.filter(function (resource) {
                         return resource.type === res.type;
                     }).length == 0)
-                        DragonBonesPlugin.ObjDictionary[resKey].resources.push(res);
+                        DragonBonesPlugin.objDictionary[resKey].resources.push(res);
                     updated = true;
                     break;
                 }
             }
             if (!updated) {
-                DragonBonesPlugin.ObjDictionary[key] = new DragonBonesObject(this.game, new Array());
-                DragonBonesPlugin.ObjDictionary[key].resources.push(res);
+                DragonBonesPlugin.objDictionary[key] = new DragonBonesObject(this.game, new Array());
+                DragonBonesPlugin.objDictionary[key].resources.push(res);
             }
         };
         DragonBonesPlugin.prototype.loadResources = function () {
-            for (var resKey in DragonBonesPlugin.ObjDictionary) {
-                var resources = DragonBonesPlugin.ObjDictionary[resKey].resources;
-                for (var i = 0; i < resources.length; i++) {
-                    var item = resources[i];
-                    if (item.loaded)
+            for (var resKey in DragonBonesPlugin.objDictionary) {
+                for (var _i = 0, _a = DragonBonesPlugin.objDictionary[resKey].resources; _i < _a.length; _i++) {
+                    var resource = _a[_i];
+                    if (resource.loaded)
                         continue;
-                    switch (item.type) {
+                    switch (resource.type) {
                         case ResType.Image:
-                            this.game.load.image(resKey + this.ImageSuffix, item.filePath);
+                            this.game.load.image(resKey + this.ImageSuffix, resource.filePath);
                             break;
                         case ResType.TextureMap:
-                            this.game.load.json(resKey + this.TextureSuffix, item.filePath);
+                            this.game.load.json(resKey + this.TextureSuffix, resource.filePath);
                             break;
                         case ResType.Bones:
-                            this.game.load.json(resKey + this.BonesSuffix, item.filePath);
+                            this.game.load.json(resKey + this.BonesSuffix, resource.filePath);
                             break;
                     }
-                    item.loaded = true;
+                    resource.loaded = true;
                 }
             }
         };
         DragonBonesPlugin.prototype.createFactoryItem = function (key) {
             key = key.toLowerCase();
-            for (var reskey in DragonBonesPlugin.ObjDictionary) {
-                if (key && reskey != key)
+            for (var resKey in DragonBonesPlugin.objDictionary) {
+                if (key && resKey != key)
                     continue;
-                var oItem = DragonBonesPlugin.ObjDictionary[reskey];
+                var oItem = DragonBonesPlugin.objDictionary[resKey];
                 var item = new DragonBonesObject(this.game, oItem.resources);
                 var image = null;
                 var texture = null;
@@ -89,13 +89,13 @@ var Rift;
                     var res = item.resources[i];
                     switch (res.type) {
                         case ResType.Image:
-                            image = this.game.cache.getItem(reskey + this.ImageSuffix, Rift.IMAGE).data;
+                            image = this.game.cache.getItem(resKey + this.ImageSuffix, Rift.IMAGE).data;
                             break;
                         case ResType.TextureMap:
-                            texture = this.game.cache.getItem(reskey + this.TextureSuffix, Rift.JSON).data;
+                            texture = this.game.cache.getItem(resKey + this.TextureSuffix, Rift.JSON).data;
                             break;
                         case ResType.Bones:
-                            bones = this.game.cache.getItem(reskey + this.BonesSuffix, Rift.JSON).data;
+                            bones = this.game.cache.getItem(resKey + this.BonesSuffix, Rift.JSON).data;
                             break;
                     }
                 }
@@ -117,7 +117,7 @@ var Rift;
         DragonBonesPlugin.prototype.refreshClock = function () {
             var hasEvent = false;
             var callback = dragonBones.PhaserFactory._clockHandler;
-            this.game.time.events.events.forEach(function (event, index, array) {
+            this.game.time.events.events.forEach(function (event, index, events) {
                 if (event.callback == callback) {
                     hasEvent = true;
                     return;
@@ -128,7 +128,7 @@ var Rift;
         };
         return DragonBonesPlugin;
     }(Phaser.Plugin));
-    DragonBonesPlugin.ObjDictionary = {};
+    DragonBonesPlugin.objDictionary = {};
     Rift.DragonBonesPlugin = DragonBonesPlugin;
     var DragonBonesObject = (function () {
         function DragonBonesObject(game, resources) {
@@ -735,4 +735,3 @@ var dragonBones;
     }(dragonBones.TextureData));
     dragonBones.PhaserTextureData = PhaserTextureData;
 })(dragonBones || (dragonBones = {}));
-//# sourceMappingURL=dragonBonesPhaser.js.map
