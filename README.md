@@ -73,10 +73,10 @@ Current test version:
 
     preload: function () {
 
-        this.dragonBonesPlugin.AddResourceByName("key",
+        this.dragonBonesPlugin.addResourceByNames("key",
             "path/to/skeleton.json", "path/to/texture.json", "path/to/texture.png");
 
-        this.dragonBonesPlugin.LoadResources();
+        this.dragonBonesPlugin.loadResources();
     },
 
     create: function () {
@@ -85,7 +85,7 @@ Current test version:
 
         var y = 3 * this.world.height / 4;
 
-        var sprite = this.dragonBonesPlugin.GetArmature("key");
+        var sprite = this.dragonBonesPlugin.getArmature("key");
 
         sprite.position.setTo(x, y);
 
