@@ -59,6 +59,10 @@ Via bower
 ````
 > bower install phaser-dragonbones
 ````
+Via npm
+````
+> npm install phaser-dragonbones
+````
 
 ```html
 <script src="example/lib/dragonBones.js"></script>
