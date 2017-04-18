@@ -49,7 +49,7 @@ Current test version:
 
 * Phaser: 2.6.2
 
-* DragonBones API: 5.0
+* DragonBones API: 4.5
 
 * DragonBones Data Format: 4.5
 

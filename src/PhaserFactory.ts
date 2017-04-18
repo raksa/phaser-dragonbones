@@ -3,26 +3,23 @@ namespace dragonBones {
     export class PhaserFactory extends BaseFactory {
 
         public game: Phaser.Game;
-
         private static _factory: PhaserFactory = null;
-
         public static _eventManager: PhaserArmatureDisplay = null;
-
         public static _clock: WorldClock = null;
 
         public static _clockHandler(passedTime: number): void {
             PhaserFactory._clock.advanceTime(-1); // passedTime !?
         }
 
-        public static get factory(game: Phaser.Game): PhaserFactory {
+        public static get factory(): PhaserFactory {
             if (!PhaserFactory._factory) {
-                PhaserFactory._factory = new PhaserFactory(null, game);
+                PhaserFactory._factory = new PhaserFactory();
             }
 
             return PhaserFactory._factory;
         }
 
-        public constructor(dataParser: DataParser = null, game: Phaser.Game) {
+        public constructor(dataParser: DataParser = null, game: Phaser.Game = null) {
             super(dataParser);
 
             this.game = game;
