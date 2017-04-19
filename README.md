@@ -12,13 +12,13 @@ Phaser + DragonBones
 Installing
 ===
 
-Make clone
+Make cloning
 ````
 Clone without submodules
 
 > git clone https://github.com/raksa/phaser-dragonbones.git
 
-Clone with submodules (will make big size of transfer git repo)
+Clone with submodules (will make big size of transferring git repo)
 
 > git clone --recurse-submodules https://github.com/raksa/phaser-dragonbones.git
 
