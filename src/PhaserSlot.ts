@@ -98,8 +98,7 @@ namespace dragonBones {
                             textureAtlasTexture,
                             <PIXI.Rectangle><any>currentTextureData.region, // No need to set frame.
                             <PIXI.Rectangle><any>currentTextureData.region,
-                            originSize,
-                            currentTextureData.rotated
+                            originSize
                         );
                     }
 
