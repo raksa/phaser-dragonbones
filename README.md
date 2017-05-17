@@ -12,33 +12,33 @@ Phaser + DragonBones
 Installing
 ===
 
-Make clone
+Make cloning
 ````
-Clone without submodules
+#Clone without submodules
 
-> git clone https://github.com/raksa/phaser-dragonbones.git
+$ git clone https://github.com/raksa/phaser-dragonbones.git
 
-Clone with submodules (will make big size of transfer git repo)
+#Clone with submodules (will make big size of transferring git repo)
 
-> git clone --recurse-submodules https://github.com/raksa/phaser-dragonbones.git
+$ git clone --recurse-submodules https://github.com/raksa/phaser-dragonbones.git
 
 ````
 
 Make compiling
 ````
-> cd phaser-dragonbones
+$ cd phaser-dragonbones
 
-> npm install
+$ npm install
 
-> npm run compile
+$ npm run compile
 
 ````
 
 Make running
 ````
-> npm run start
+$ npm run start
 
-test example in  "example" folder
+#test example in  "example" folder
 
 ````
 
@@ -57,11 +57,11 @@ Current test version:
 
 Via bower
 ````
-> bower install phaser-dragonbones
+$ bower install phaser-dragonbones
 ````
 Via npm
 ````
-> npm install phaser-dragonbones
+$ npm install phaser-dragonbones
 ````
 
 ```html
