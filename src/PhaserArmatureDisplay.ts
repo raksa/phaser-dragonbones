@@ -16,6 +16,28 @@ namespace dragonBones {
             super(game, 0, 0, 0);
 
             this.game = game;
+
+            this.events.onDBStart = new Phaser.Signal();
+            this.events.onDBLoopComplete = new Phaser.Signal();
+            this.events.onDBComplete = new Phaser.Signal();
+            this.events.onDBFadeIn = new Phaser.Signal();
+            this.events.onDBFadeInComplete = new Phaser.Signal();
+            this.events.onDBFadeOut = new Phaser.Signal();
+            this.events.onDBFadeOutComplete = new Phaser.Signal();
+            this.events.onDBFrameEvent = new Phaser.Signal();
+            this.events.onDBSoundEvent = new Phaser.Signal();
+
+            this._eventMap = {
+                start: this.events.onDBStart,
+                loopComplete: this.events.onDBLoopComplete,
+                complete: this.events.onDBComplete,
+                fadeIn: this.events.onDBFadeIn,
+                fadeInComplete: this.events.onDBFadeInComplete,
+                fadeOut: this.events.onDBFadeOut,
+                fadeOutComplete: this.events.onDBFadeOutComplete,
+                frameEvent: this.events.onDBFrameEvent,
+                soundEvent: this.events.onDBSoundEvent,
+            }
         }
 
         public SetBounds(force?: boolean) {
@@ -32,11 +54,14 @@ namespace dragonBones {
                 this._debugDrawer = null;
             }
 
+            // Object.values(this._eventMap).forEach(e => e.dispose());
+            this._eventMap = null;
+
             this.destroy(true);
         }
 
         public _dispatchEvent(eventObject: EventObject): void {
-            //this.emit(eventObject.type, eventObject);
+            this._eventMap[eventObject.type].dispatch(eventObject);
         }
 
         public _debugDraw(isEnabled: boolean): void {
@@ -69,8 +94,7 @@ namespace dragonBones {
          * @inheritDoc
          */
         public hasEvent(type: EventStringType): boolean {
-            //return <boolean>this.listeners(type, true);
-            return false;
+            return <boolean>this._eventMap[type].getNumListeners() > 0;
         }
         /**
          * @inheritDoc
